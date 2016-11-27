@@ -60,7 +60,7 @@ def calc_accuracy_each_matrix(m):
 
 # Read data files:
 train = pd.read_csv("train_original.csv", header=None)
-test  = pd.read_csv("test_yuzluk.csv", header=None)
+test  = pd.read_csv("test_original.csv", header=None)
 
 perc = 0.8
 train_x = train.values[:,:-1]
@@ -87,16 +87,16 @@ e_vals, e_vecs = la.eig(cov)
 e_vals_test, e_vecs_test = la.eig(cov_test)
 
 #sort all of them
-#e_vals, e_vecs = sort_eigs(e_vals, e_vecs)
-#e_vals_test, e_vecs_test = sort_eigs(e_vals, e_vecs)
+e_vals, e_vecs = sort_eigs(e_vals, e_vecs)
+e_vals_test, e_vecs_test = sort_eigs(e_vals, e_vecs)
 
 #calculate percent of eigenvector will be chosen
-limit = int(len(e_vals) * (1-perc))
-limit_test = int(len(e_vals_test) * (1-perc))
+limit = int(len(e_vals) * perc)
+limit_test = int(len(e_vals_test) * perc)
 
 #l_e_vals = e_vals[:limit]
-l_e_vecs = e_vecs[:,limit:]
-l_e_vecs_test = e_vecs_test[:,limit:]
+l_e_vecs = e_vecs[:,:limit]
+l_e_vecs_test = e_vecs_test[:,:limit]
 
 print("\nFor "+str(perc)+ ": \n")
 #found final data
