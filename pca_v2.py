@@ -1,7 +1,7 @@
 __author__ = 'bilge'
 import numpy as np
 import pandas as pd
-from scipy import linalg as la
+from numpy import linalg as la
 
 def sort_eigs(e_vals, e_vecs):
     idx = e_vals.argsort()[::-1]
@@ -87,8 +87,8 @@ e_vals, e_vecs = la.eig(cov)
 e_vals_test, e_vecs_test = la.eig(cov_test)
 
 #sort all of them
-#e_vals, e_vecs = sort_eigs(e_vals, e_vecs)
-#e_vals_test, e_vecs_test = sort_eigs(e_vals, e_vecs)
+e_vals, e_vecs = sort_eigs(e_vals, e_vecs)
+e_vals_test, e_vecs_test = sort_eigs(e_vals, e_vecs)
 
 #calculate percent of eigenvector will be chosen
 limit = int(len(e_vals) * (1-perc))
@@ -100,10 +100,12 @@ l_e_vecs_test = e_vecs_test[:,limit:]
 
 print("\nFor "+str(perc)+ ": \n")
 #found final data
-final_data = np.dot(l_e_vecs.T, meanCent.T)
-final_data_test = np.dot(l_e_vecs_test.T, meanCentTest.T)
+#final_data = np.dot(l_e_vecs.T, meanCent.T)
+#final_data_test = np.dot(l_e_vecs_test.T, meanCentTest.T)
+final_data = meanCent.dot(l_e_vecs)
+final_data_test = meanCentTest.dot(l_e_vecs_test)
 #calculation started
-dists = euclidean(final_data.T,final_data_test.T,train_y,test_y)
+dists = euclidean(final_data,final_data_test,train_y,test_y)
 m = confusion_matrix(dists)
 calc_accuracy_each_matrix(m)
 #true_positives_perc(dists)

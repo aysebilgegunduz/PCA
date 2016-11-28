@@ -3,13 +3,18 @@ from sklearn.decomposition import PCA
 from sklearn import svm
 
 # Read data files:
-train = pd.read_csv("train.csv")
-test  = pd.read_csv("test.csv")
+train = pd.read_csv("train_original.csv")
+test  = pd.read_csv("test_yuzluk.csv")
 
 
-train_x = train.values[:,1:]
-train_y = train.ix[:,0]
-test_x = test.values
+#train_x = train.values[:,1:]
+#train_y = train.ix[:,0]
+#test_x = test.values
+train_x = train.values[:,:-1]
+train_y = train.values[:,-1]
+test_x = test.values[:,:-1]
+test_y = test.values[:,-1]
+
 
 pca = PCA(n_components=0.8,whiten=True)
 train_x = pca.fit_transform(train_x)
